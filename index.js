@@ -1,62 +1,79 @@
 // TODO: Include packages needed for this application
-var inquirer = require("inquirer");
-var fs = require("fs");
-var generateMarkdown = require("./utils/generateMarkdown");
+const inquirer = require("inquirer");
+
+const generateMarkdown = require("./utils/generateMarkdown.js");
+
+const fs = require("fs");
 // TODO: Create an array of questions for user input
 const questions = [
   {
-    name: "word",
-    message: "What would you like to say?",
-    type: "list",
-    choices: ["Apple", "banana", "cat"],
+    type: "input",
+    name: "Title",
+    message: "What is the title of your Project?",
   },
   {
-    name: "food",
-    message: "What would you like to eat?",
     type: "input",
+    name: "Description",
+    message: "What is the description for your project?",
   },
   {
-    name: "title",
-    message: "Title",
     type: "input",
+    name: "Installation",
+    message: "Please provide the required installations for this application?",
   },
   {
-    name: "github",
-    message: "My github username",
     type: "input",
+    name: "Usage",
+    message: "Please provide the instructions for this usage?",
+  },
+  {
+    type: "List",
+    name: "License",
+    choices: ["MIT License", "Mozilla Public License 2.0", "Apache-2.0"],
+    message: "Please select the type of License?",
+  },
+  {
+    type: "input",
+    name: "Contributing",
+    message: "Please provide the members contributing?",
+  },
+  {
+    type: "input",
+    name: "Test",
+    message: "Please provide testing instructions for this application?",
+  },
+  {
+    type: "input",
+    name: "Questions",
+    message: "Please provide some questions for this application?",
+  },
+  {
+    type: "input",
+    name: "Github",
+    message: "What is your Github user name?",
+  },
+  {
+    type: "input",
+    name: "Email",
+    message: "What is your email address?",
   },
 ];
 
 // TODO: Create a function to write README file
-function writeToFile(fileName, answers) {
-  const text = generateMarkdown(answers);
-  fs.writeFile(fileName, text, function (err) {
-    if (err) {
-      return console.error(err);
-    }
-    console.log("Data written successfully!");
-    // Read the newly written file and print all of its content on the console
-  });
+function writeToFile(fileName, data) {
+  return fs.writeFileSync(fileName, data);
 }
-
 // TODO: Create a function to initialize app
 function init() {
-  inquirer.prompt(questions).then(function (answers) {
-    console.log(answers);
-    writeToFile("Myreadme.md", answers);
-  });
-  // Open a new file with name input.txt and write Simply Easy Learning! to it.
+  inquirer
+    .prompt(questions)
+    .then((data) => writeToFile("READMEGENERATED.md", generateMarkdown(data)))
+    .then(() => console.log("README successfully written."))
+    .catch((err) => console.log(err));
+
+  // // Open a new file with name input.txt and write Simply Easy Learning! to it.
+  // console.log("Simply Easy Learning");
 }
 
 // Function call to initialize app
 init();
-
-// use node inquerier to get input.
-// write a readme file.md
-// title
-// descriptions, installations, Useage, contributions, test instruction.
-// collect info and write it in to the readme.
-// github username.
-// create a link to github profile.
-// email address.
-// table of content.
